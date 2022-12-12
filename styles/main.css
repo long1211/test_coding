@@ -5,10 +5,15 @@
     font-family: Verdana, sans-serif;
 }
 
+ol,
+li {
+    list-style: none;
+}
+
 .container {
     margin: 0 auto;
     width: 50%;
-    padding: 10rem 20px;
+    padding: 6rem 20px;
 }
 
 .text {
@@ -42,13 +47,34 @@ label {
 input[type="submit"] {
     outline: none;
     border: none;
-    background-color:#0099FF;
+    background-color: #0099FF;
     color: #fff;
     font-size: 16px;
     padding: 8px 25px;
     cursor: pointer;
-    margin-top: 1rem;
-    float: right;
+    display: block;
+    margin: 1rem auto 4rem auto;
+}
+
+.wrapper_infor {
+    flex: 0 1 auto;
+    flex-flow: row wrap;
+    display: flex;
+    box-sizing: border-box;
+    margin-top: 1.5rem;
+}
+
+.box_infor {
+    box-sizing: border-box;
+    flex: 0 0 38%;
+    margin: 20px 10px;
+    max-width: 31%;
+    background-color: aqua;
+    padding: 12px;
+}
+
+.box_infor li {
+    margin-bottom: .65rem;
 }
 
 @media screen and (max-width: 480px) {
@@ -71,5 +97,11 @@ input[type="submit"] {
         padding: 8px;
         border: 1px solid #a5a5a5;
         border-radius: 0;
+    }
+
+    .box_infor {
+        flex: 0 0 44%;
+        margin: 15px 10px;
+        max-width: 55%;
     }
 }

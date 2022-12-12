@@ -1,11 +1,8 @@
-<!-- saved from url=(0094)file:///C:/Users/oliver.stimmer/AppData/Roaming/Skype/My%20Skype%20Received%20Files/index.html -->
 <html>
 
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
    <link rel="stylesheet" href="./styles/main.css" />
 </head>
 
@@ -22,14 +19,10 @@
 
 
    <script type="text/babel" data-type="module">
+
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
-
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
       const firebaseConfig = {
          apiKey: "AIzaSyDrYU_z-2NPQ3VzHecBW7RpddfZ9_jT248",
          authDomain: "fir-test-ff222.firebaseapp.com",
@@ -48,16 +41,14 @@
 
 
 
-
-
-
       const Sectors = () => {
          const [sector, setSector] = React.useState([])
+         const [infor, setInfor] = React.useState([])
          const [name, setName] = React.useState('')
          const [sectors, setSectors] = React.useState()
          const [agree, setAgree] = React.useState(false)
-         const [ID, setID] = React.useState('')
-      
+         const [ID, setID] = React.useState()
+
          // Read Sectors DB
          const dbRef = ref(db);
          get(child(dbRef, "sectors"))
@@ -69,12 +60,22 @@
                setSector(dt)
             })
 
+         // Read Sectors DB
+         get(child(dbRef, "userSector"))
+            .then((snapshot) => {
+               let dt = [];
+               snapshot.forEach(childSnapshot => {
+                  dt.push(childSnapshot.val())
+               })
+               setInfor(dt)
+            })
 
 
+
+
+         // Save Data
 
          function handleSubmit(e) {
-            setID(Math.random)
-
             set(ref(db, "userSector/" + ID), {
                name,
                sectors,
@@ -89,23 +90,23 @@
 
          }
 
-
-         const handleChange = event => {
-            setName(event.target.value);
+         const handleChange = e => {
+            setName(e.target.value);
          };
 
          const handleChangeSectors = e => {
             setSectors(e.target.value);
-            //console.log(e.target.value)
          };
 
          const handleChangeCheck = e => {
             setAgree(e.target.checked);
-            // console.log(e.target.checked)
          };
 
-
-
+         const handleID = () => {
+            let randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            let uuid = randLetter + Date.now();
+            setID(uuid)
+         }
          return (
             <>
 
@@ -126,8 +127,30 @@
                   <input type="checkbox" onChange={handleChangeCheck} required /> Agree to terms
                   <br />
                   <br />
-                  <input type="submit" value="Save" />
+
+                  <input type="submit" value="Save" onClick={handleID} />
                </form>
+
+               <div>
+
+                  <h1>Information</h1>
+
+                  <ul className="wrapper_infor">
+                     {infor.map((inf) =>
+                        <div className="box_infor">
+                           <li key={inf.id}>
+                              <b>Name:</b> {inf.name}
+                           </li>
+                           <li key={inf.id}>
+                              <b>Sector:</b> {inf.sectors}
+                           </li>
+                           <li key={inf.id}>
+                              <b>Agree to terms:</b>  {inf.agree ? 'Agree' : null}
+                           </li>
+                        </div>
+                     )}
+                  </ul>
+               </div>
             </>
          )
 
